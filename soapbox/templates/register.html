@@ -1,0 +1,14 @@
+ <form method="post" action="">{% csrf_token %}
+        <div>{{ form.first_name }}</div></br> 
+
+        <div>{{form.last_name }} <br>
+        {{ form.password }} <br>
+        <input type="submit" value="Submit Form"/>
+    </form>
+    {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <p> {{ errors }} </p>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
