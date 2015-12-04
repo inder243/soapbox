@@ -1,100 +1,272 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
+#
+# Also note: You'll have to insert the output of 'django-admin sqlcustom [app_label]'
+# into your database.
+from __future__ import unicode_literals
+
 from django.db import models
-# Create your models here.
 
-class Users(models.Model):
-	id = models.AutoField(primary_key=True)
-	username = models.CharField(max_length=50)
-	email = models.EmailField(null=False)
-	password = models.CharField(max_length=50)
-	status = models.SmallIntegerField(null=False)
-	user_type = models.CharField(max_length=10, null=False)
-	registered_thru = models.CharField(max_length=20, null=False)
 
-class PersonalDetails(models.Model):
-	id = models.AutoField(primary_key=True)
-	user = models.ForeignKey(Users, related_name='users', related_query_name='usr', on_delete=models.CASCADE)
-	first_name = models.CharField(max_length=40, null=False)
-	last_name = models.CharField(max_length=30)
-	dob = models.DateField(null=True)
-	age = models.SmallIntegerField()
-	state = models.CharField(max_length=50)
-	city = models.CharField(max_length=50)
-	profile_img = models.CharField(max_length=250)
+class DjangoMigrations(models.Model):
+    app = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    applied = models.DateTimeField()
 
-class ChatMod(models.Model):
-	juser = models.ForeignKey(Users, related_name='jusers', related_query_name='jusr', on_delete=models.CASCADE)
-	jabber_id = models.BigIntegerField()
-	jabber_password = models.CharField(max_length=72)
+    class Meta:
+        managed = False
+        db_table = 'django_migrations'
 
-class UserStatus(models.Model):
-	id = models.AutoField(primary_key=True)
-	user = models.ForeignKey(Users, related_name='usrstats', related_query_name='usrs', on_delete=models.CASCADE)
-	about = models.TextField(null=False)
-	usrst = models.OneToOneField(Users, related_name='usrstat')
 
-class UserImage(models.Model):
-	id = models.AutoField(primary_key=True)
-	user = models.ForeignKey(Users, related_name='usersim', related_query_name='usrimg', on_delete=models.CASCADE)
-	profilepic = models.CharField(max_length=150,null=False)
-	userimage = models.OneToOneField(Users, related_name='usrimage')
+class SoapboxAppcategory(models.Model):
+    category = models.CharField(max_length=255)
+    channel = models.CharField(max_length=255)
 
-class UserFollowers(models.Model):
-	user_id = models.ForeignKey(Users, related_name='usrid', related_query_name='followusr', on_delete=models.CASCADE)
-	follower_id = models.ForeignKey(Users, related_name='usrfl', related_query_name='usrfollower', on_delete=models.CASCADE)
+    class Meta:
+        managed = False
+        db_table = 'soapbox_appcategory'
 
-class Categories(models.Model):
-	id = models.AutoField(primary_key=True)
-	category_name = models.CharField(max_length=50, null=False)
-	created_by = models.ForeignKey(Users, related_name='usrcatcreate', related_query_name='catusr', on_delete=models.CASCADE)
-	#usrcat = models.OneToOneField(Users, related_name='usrcateg')
-	created_on = models.DateField(auto_now=True)
-	created_at = models.TimeField(auto_now=True)
-	type_of_category = models.CharField(max_length=10)
 
-#To store the users to a custom Group created by another user
-class GroupUsersCategory(models.Model):
-	category = models.ForeignKey(Categories, related_name='usrcategry', related_query_name='grpusr', on_delete=models.CASCADE)
-	user = models.ForeignKey(Users, related_name='grpusrs', related_query_name='gusrid', on_delete=models.CASCADE)
+class SoapboxAppusers(models.Model):
+    apikey = models.CharField(max_length=255)
+    socialid = models.CharField(max_length=255)
+    firstname = models.CharField(max_length=255)
+    lastname = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    dateofbirth = models.DateField()
+    password = models.CharField(max_length=255)
+    gender = models.CharField(max_length=255)
+    profilepic = models.CharField(max_length=255)
+    created_at = models.DateField()
+    #modified_at = models.DateField(null=True, blank=True)
+    voicemessage = models.CharField(max_length=255)
+    usertype = models.CharField(max_length=255)
+    intro_audio_url = models.CharField(max_length=255)
 
-class Posts(models.Model):
-	id = models.AutoField(primary_key=True)
-	post_file_url = models.CharField(max_length=150, null=False)
-	post_title = models.CharField(max_length=150)
-	post_description = models.TextField()
-	posted_on = models.DateField(auto_now=True)
-	posted_at = models.TimeField(auto_now=True)
-	user_by = models.ForeignKey(Users, related_name='usrpost', related_query_name='postusr', on_delete=models.CASCADE)
-	#postuser = 	models.ManyToManyField(Users, related_name='pstusrs')
+    class Meta:
+        managed = False
+        db_table = 'soapbox_appusers'
+		
+class SoapboxDevicetoken(models.Model):
+	userid = models.IntegerField()
+	devicetype = models.IntegerField()
+	devicetoken = models.CharField(max_length=255)
+	
+	class Meta:
+		managed = False
+		db_table = 'soapbox_devicetoken'
 
-class PostCategories(models.Model):
-	id = models.AutoField(primary_key=True)
-	category = models.ForeignKey(Categories, related_name='categtype', related_query_name='cattype', on_delete=models.CASCADE)
-	post = models.ForeignKey(Posts, related_name='post', related_query_name='posts', on_delete=models.CASCADE)
 
-class PostLikes(models.Model):
-	post = models.ForeignKey(Posts, related_name='likepost', related_query_name='postlik', on_delete=models.CASCADE)
-	num_likes = models.IntegerField()
+class SoapboxCategories(models.Model):
+    channel_name = models.CharField(max_length=255)
+    created_at = models.DateTimeField()
+   # modified_at = models.TimeField()
+    type_of_channel = models.IntegerField()
+    created_by_id = models.IntegerField()
 
-class PostListens(models.Model):
-	post = models.ForeignKey(Posts, related_name='listenpost', related_query_name='postlisten', on_delete=models.CASCADE)
-	num_listens = models.IntegerField()
+    class Meta:
+        managed = False
+        db_table = 'soapbox_categories'
 
-class PostShares(models.Model):
-	post = models.ForeignKey(Posts, related_name='sharepost', related_query_name='postshare', on_delete=models.CASCADE)
-	num_shares = models.IntegerField()
 
-class Comments(models.Model):
-	id = models.AutoField(primary_key=True)
-	description = models.TextField(null=False)
-	comment = models.TextField(null=True)
-	type_of_post = models.CharField(max_length=7, null=False)
-	user = models.ForeignKey(Users, related_name='cmtusr', related_query_name='usrcmr', on_delete=models.CASCADE)
-	comment_on = models.DateField(auto_now=True)
-	comment_at = models.TimeField(auto_now=True)
 
-class PodcastTimer(models.Model):
-	id = models.AutoField(primary_key=True)
-	timer = models.IntegerField(null=False)
+class SoapboxChatmod(models.Model):
+    jabber_id = models.BigIntegerField()
+    jabber_password = models.CharField(max_length=72)
+#    juser = models.ForeignKey('SoapboxUsers')
 
-	def __str__(self):
-		return "%s" % (self.timer)
+    class Meta:
+        managed = False
+        db_table = 'soapbox_chatmod'
+
+
+class SoapboxComments(models.Model):
+    comment = models.CharField(max_length=255, blank=True, null=True)
+    post_id = models.IntegerField()
+    comment_on = models.DateField()
+    comment_at = models.TimeField()
+    user_id = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_comments'
+		
+class SoapboxConnectiontablesocialid(models.Model):
+
+    userid = models.IntegerField()
+    socialsitename = models.CharField(max_length=255)
+    socialid = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_connectiontablesocialid'
+
+class SoapboxGroupuserscategory(models.Model):
+    category = models.ForeignKey(SoapboxCategories)
+#    user = models.ForeignKey('SoapboxUsers')
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_groupuserscategory'
+
+
+class SoapboxPersonaldetails(models.Model):
+    first_name = models.CharField(max_length=40)
+    last_name = models.CharField(max_length=30)
+    dob = models.DateField(blank=True, null=True)
+    age = models.SmallIntegerField()
+    state = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    profile_img = models.CharField(max_length=250)
+#    user = models.ForeignKey('SoapboxUsers')
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_personaldetails'
+
+
+class SoapboxPodcasttimer(models.Model):
+    timer = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_podcasttimer'
+
+
+class SoapboxPostcategories(models.Model):
+    category = models.ForeignKey(SoapboxCategories)
+#    post = models.ForeignKey('SoapboxPosts')
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_postcategories'
+
+
+class SoapboxPostlikes(models.Model):
+    num_likes = models.IntegerField()
+    post_id = models.IntegerField()
+    user_id = models.IntegerField()
+    like_on = models.DateField()
+    like_at = models.TimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_postlikes'
+
+
+class SoapboxPostlistens(models.Model):
+    num_listens = models.IntegerField()
+    post_id = models.IntegerField()
+    user_id = models.IntegerField()
+    listen_on = models.DateField()
+    listen_at = models.TimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_postlistens'
+
+
+class SoapboxPosts(models.Model):
+    #post_id = models.ForeignKey('SoapboxTagrelatedtopost')
+   # userid = models.ForeignKey('SoapboxAppusers')
+    post_id = models.IntegerField()
+    userid = models.IntegerField()
+    channelid = models.IntegerField()
+    matter_msg_id = models.IntegerField()
+    channel_name = models.CharField(max_length=255)
+   
+    #modified_at = models.DateField()
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_posts'
+		
+class SoapboxTagrelatedtopost(models.Model):
+    post_file_url = models.CharField(max_length=255)
+    user_id = models.IntegerField()
+    post_title = models.CharField(max_length=255)
+    posted_on = models.DateField()
+    posted_at = models.TimeField()
+    class Meta:
+        managed = False
+        db_table = 'soapbox_tagrelatedtopost'
+
+
+class SoapboxPostshares(models.Model):
+    num_shares = models.IntegerField()
+    post_id = models.IntegerField()
+    user_id = models.IntegerField()
+    share_on = models.DateField()
+    share_at = models.TimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_postshares'
+		
+class SoapboxSubscribechannel(models.Model):
+    userid = models.IntegerField()
+    channelid = models.IntegerField()
+    issubscribe = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_subscribechannel'
+		
+class SoapboxPostlikeandshare(models.Model):
+    num_likes = models.IntegerField()
+    num_share = models.IntegerField()
+    num_listen = models.IntegerField()
+    num_comment = models.IntegerField()
+    post_id = models.IntegerField()
+    user_id = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_postlikeandshare'
+
+
+class SoapboxUserfollowers(models.Model):
+    following_user_id = models.IntegerField()
+    user_id = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_userfollowers'
+
+
+#class SoapboxUserimage(models.Model):
+#    profilepic = models.CharField(max_length=150)
+#    user = models.ForeignKey('SoapboxUsers')
+#    userimage = models.ForeignKey('SoapboxUsers', unique=True)
+#
+#    class Meta:
+#        managed = False
+#        db_table = 'soapbox_userimage'
+
+
+#class SoapboxUsers(models.Model):
+#    username = models.CharField(max_length=50)
+#    email = models.CharField(max_length=254)
+#    password = models.CharField(max_length=50)
+#    status = models.SmallIntegerField()
+#    user_type = models.CharField(max_length=10)
+#    registered_thru = models.CharField(max_length=20)
+#
+#    class Meta:
+#        managed = False
+#        db_table = 'soapbox_users'
+
+
+class SoapboxUserstatus(models.Model):
+    about = models.TextField()
+ #   user = models.ForeignKey(SoapboxUsers)
+ #   usrst = models.ForeignKey(SoapboxUsers, unique=True)
+
+    class Meta:
+        managed = False
+        db_table = 'soapbox_userstatus'

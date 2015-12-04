@@ -17,6 +17,7 @@ from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from django.conf import settings
 from soapbox import views
+from soapbox import soapboxwebservice
 from soapboxadmin import views as adminviews
 
 urlpatterns = [
@@ -44,16 +45,37 @@ urlpatterns = [
     url(r'^soapbox/$', adminviews.index, name='admin-index'),
     url(r'^soapbox/index/$', adminviews.index, name='admin-index'),
     url(r'^soapbox/login/$', adminviews.login, name='admin-login'),
-    url(r'^soapbox/logout/$', adminviews.logout, name='admin-logout'),
-    url(r'^soapbox/manageusers/$', adminviews.manageusers, name='admin-manage-users'),
-    url(r'^soapbox/manageposts/$', adminviews.manageposts, name='admin-manage-posts'),
-    url(r'^soapbox/managecategories/$', adminviews.managecategories, name='admin-manage-categories'),
-    url(r'^soapbox/manageautolength/$', adminviews.manageautolength, name='admin-manage-autolength'),
-    url(r'^soapbox/manageprofile/$', adminviews.manageprofile, name='admin-manage-profile'),
-    url(r'^soapbox/editprofile/$', adminviews.editprofile, name='admin-edit-profile'),
-    url(r'^soapbox/authenticate/$', adminviews.authenticate, name='admin-authenticate'),
+    url(r'^logout/$', adminviews.logout, name='admin-logout'),
+    url(r'^manageusers/$', adminviews.manageusers, name='admin-manage-users'),
+    url(r'^manageposts/$', adminviews.manageposts, name='admin-manage-posts'),
+    url(r'^managecategories/$', adminviews.managecategories, name='admin-manage-categories'),
+    url(r'^manageautolength/$', adminviews.manageautolength, name='admin-manage-autolength'),
+    url(r'^manageprofile/$', adminviews.manageprofile, name='admin-manage-profile'),
+    url(r'^editprofile/$', adminviews.editprofile, name='admin-edit-profile'),
+    url(r'^authenticate/$', adminviews.authenticate, name='admin-authenticate'),
 
     #For Testing Purpose
    # url(r'^testapp/$', views.testapp),
     url(r'^testapp2/$', views.testapp2),
+	
+	
+	# for webservice
+	 url(r'^appregister/$', soapboxwebservice.appRegister),
+	 url(r'^applogin/$', soapboxwebservice.appLogin),
+	 url(r'^channelSuggestions/$', soapboxwebservice.channelSuggestions),
+	 url(r'^serachcategory/$', soapboxwebservice.serachCategory),
+	 url(r'^uploadfile/$', soapboxwebservice.uploadfile),
+	 url(r'^connectSocialMedia/$', soapboxwebservice.connectSocialMedia),
+	 url(r'^postAudioMessage/$', soapboxwebservice.postAudioMessage),
+	 url(r'^subscribechannel/$', soapboxwebservice.subscribechannel),
+	 url(r'^follow/$', soapboxwebservice.follow),
+	 url(r'^postAudioReplyMessage/$', soapboxwebservice.postAudioReplyMessage),
+	 url(r'^userPostList/$', soapboxwebservice.userPostList),
+	 url(r'^headerinfo/$', soapboxwebservice.headerinfo),
+	 url(r'^like/$', soapboxwebservice.like),
+	 url(r'^getPopularPostList/$', soapboxwebservice.getPopularPostList),
+	 url(r'^getUserList/$', soapboxwebservice.getUserList),
+	 url(r'^getFollowingPostList/$', soapboxwebservice.getFollowingPostList),
+	 url(r'^postReplyOther/$', soapboxwebservice.postReplyOther),
+	 
 ]

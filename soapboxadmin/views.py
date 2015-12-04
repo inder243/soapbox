@@ -9,7 +9,7 @@ from django.db import transaction
 from array import array
 from datetime import date
 from django.conf import settings
-from soapbox.models import Users, PersonalDetails, UserStatus, UserImage, UserStatus, UserFollowers, Categories, GroupUsersCategory, Posts, PostCategories, PostLikes, PostListens, PostShares, Comments, PodcastTimer
+#from soapbox.models import Users, PersonalDetails, UserStatus, UserImage, UserStatus, UserFollowers, Categories, GroupUsersCategory, Posts, PostCategories, PostLikes, PostListens, PostShares, Comments, PodcastTimer
 from django.core import serializers #for serialization to and from JSON, XML
 import md5, json, os, MySQLdb, os, subprocess
 # Create your views here.
@@ -205,3 +205,7 @@ def editprofile(request):
 		t = get_template('soapboxadmin/login.html')
 		html = t.render(Context({}))
 		return HttpResponse(html)
+		
+		
+
+		
